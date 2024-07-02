@@ -107,9 +107,9 @@ export default function SignUp() {
         formData={formData}
         validationErrors={validationErrors}
         handleChange={handleChange}
-      />{" "}
+      />
       {/* 회원가입 폼 컴포넌트 */}
-      <SignUpButton handleSubmit={handleSubmit} />{" "}
+      <SignUpButton handleSubmit={handleSubmit} />
       {/* 회원가입 버튼 컴포넌트 */}
     </>
   );
