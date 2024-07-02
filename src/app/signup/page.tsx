@@ -52,20 +52,18 @@ export default function SignUp() {
       isValid = false;
     }
 
-    if (
-      !formData.username ||
-      formData.username.length < 2 ||
-      formData.username.length > 12
-    ) {
+    if (!formData.username) {
+      errors.fullName = "username을 입력해주세요";
+      isValid = false;
+    } else if (formData.username.length < 2 || formData.username.length > 12) {
       errors.username = "Username은 2글자 이상 12글자 이하로 입력해주세요";
       isValid = false;
     }
 
-    if (
-      !formData.password ||
-      formData.password.length < 6 ||
-      formData.password.length > 12
-    ) {
+    if (!formData.password) {
+      errors.fullName = "password를 입력해주세요";
+      isValid = false;
+    } else if (formData.password.length < 6 || formData.password.length > 12) {
       errors.password = "Password는 6글자 이상 12글자 이하로 입력해주세요";
       isValid = false;
     }
