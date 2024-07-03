@@ -2,7 +2,7 @@
 import { useState } from "react";
 import ToDoTitle from "../components/todolist/ToDoTitle";
 import ToDoAdd from "../components/todolist/ToDoAdd";
-import ToDoItem from "../components/todolist/ToDoItem";
+import ToDoItems from "../components/todolist/ToDoItems";
 import ToDoProgress from "../components/todolist/ToDoPrgress";
 
 type Todo = {
@@ -46,7 +46,7 @@ const ToDoList = () => {
     <>
       <ToDoTitle /> {/*{ 타이틀 컴포넌트 */}
       <ToDoAdd onAdd={onAdd} /> {/* ToDo 추가 컴포넌트 */}
-      <ToDoItem todos={todos} onCheck={onCheck} onDelete={onDelete} />
+      <ToDoItems todos={todos} onCheck={onCheck} onDelete={onDelete} />
       {/* ToDo 목록 컴포넌트 */}
       <ToDoProgress todos={todos.length} completedTodos={completedTodos} />
       {/* ToDo 진행률 컴포넌트 */}
