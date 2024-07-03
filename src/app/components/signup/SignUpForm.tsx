@@ -1,4 +1,4 @@
-type SignUpFormProps = {
+interface SignUpFormProps {
   formData: {
     phoneNumberOrEmail: string;
     fullName: string;
@@ -12,11 +12,13 @@ type SignUpFormProps = {
     password: string;
   };
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
-export default function SignUpForm(props: SignUpFormProps) {
-  const { formData, validationErrors, handleChange } = props;
-
+const SignUpForm = ({
+  formData,
+  validationErrors,
+  handleChange,
+}: SignUpFormProps) => {
   // 각 입력 요소의 정보 배열
   const formFields = [
     {
@@ -74,4 +76,6 @@ export default function SignUpForm(props: SignUpFormProps) {
       </form>
     </>
   );
-}
+};
+
+export default SignUpForm;

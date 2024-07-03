@@ -1,4 +1,4 @@
-export default function Header() {
+const Header = () => {
   return (
     // Header
     <div className="w-100vw h-[54px] py-[14px] px-[24px] flex jusity-between">
@@ -22,4 +22,6 @@ export default function Header() {
       </button>
     </div>
   );
-}
+};
+
+export default Header;

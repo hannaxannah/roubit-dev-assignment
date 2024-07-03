@@ -7,7 +7,7 @@ import SignUpTitle from "../components/signup/SignUpTitle";
 import SignUpForm from "../components/signup/SignUpForm";
 import SignUpButton from "../components/signup/SignUpButton";
 
-export default function SignUp() {
+const SignUp = () => {
   // 폼 입력 상태
   const [formData, setFormData] = useState({
     phoneNumberOrEmail: "",
@@ -117,4 +117,6 @@ export default function SignUp() {
       {/* 회원가입 버튼 컴포넌트 */}
     </>
   );
-}
+};
+
+export default SignUp;

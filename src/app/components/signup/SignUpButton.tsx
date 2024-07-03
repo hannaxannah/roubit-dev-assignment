@@ -1,9 +1,7 @@
-type SubmitButtonProps = {
+interface SubmitButtonProps {
   handleSubmit: () => void;
-};
-
-export default function SignUpButton(props: SubmitButtonProps) {
-  const { handleSubmit } = props;
+}
+const SignUpButton = ({ handleSubmit }: SubmitButtonProps) => {
   return (
     <>
       <div className="mx-[1.5rem] mt-[7.625rem] w-[20.438rem] h-[3.25rem] bg-[#E8E8EA] rounded-t-xl rounded-b-xl hover:bg-[#209C6A]">
@@ -16,4 +14,6 @@ export default function SignUpButton(props: SubmitButtonProps) {
       </div>
     </>
   );
-}
+};
+
+export default SignUpButton;

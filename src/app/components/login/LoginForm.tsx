@@ -1,4 +1,4 @@
-type LogInFormProps = {
+interface LogInFormProps {
   formData: {
     phoneNumberOrEmail: string;
     password: string;
@@ -7,12 +7,14 @@ type LogInFormProps = {
     phoneNumberOrEmail: string;
     password: string;
   };
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-export default function LoginForm(props: LogInFormProps) {
-  const { formData, validationErrors, handleChange } = props;
-
+const LoginForm = ({
+  formData,
+  validationErrors,
+  onChange,
+}: LogInFormProps) => {
   const formFields = [
     {
       name: "phoneNumberOrEmail",
@@ -42,11 +44,13 @@ export default function LoginForm(props: LogInFormProps) {
             placeholder={field.placeholder}
             name={field.name}
             value={field.value}
-            onChange={handleChange}
+            onChange={onChange}
             key={index}
           />
         ))}
       </form>
     </>
   );
-}
+};
+
+export default LoginForm;

@@ -1,9 +1,8 @@
-type ProgressPros = {
+interface ProgressPros {
   todos: number;
   completedTodos: number;
-};
-
-export default function ToDoProgress(props: ProgressPros) {
+}
+const ToDoProgress = (props: ProgressPros) => {
   const { todos, completedTodos } = props;
 
   return (
@@ -19,4 +18,6 @@ export default function ToDoProgress(props: ProgressPros) {
       </div>
     </>
   );
-}
+};
+
+export default ToDoProgress;

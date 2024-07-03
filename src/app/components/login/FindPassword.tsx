@@ -1,4 +1,4 @@
-export default function FindPassword() {
+const FindPassword = () => {
   return (
     <>
       <div className="w-[327px] mt-[17px] flex justify-center m-auto">
@@ -8,4 +8,6 @@ export default function FindPassword() {
       </div>
     </>
   );
-}
+};
+
+export default FindPassword;

@@ -1,4 +1,4 @@
-export default function ToDoTitle() {
+const ToDoTitle = () => {
   return (
     <>
       {/* To-Do List Title */}
@@ -7,4 +7,6 @@ export default function ToDoTitle() {
       </div>
     </>
   );
-}
+};
+
+export default ToDoTitle;

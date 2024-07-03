@@ -7,7 +7,7 @@ import CreateNewAccount from "../components/login/CreateNewAccount";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function LogIn() {
+const LogIn = () => {
   // 폼 입력 상태
   const [formData, setFormData] = useState({
     phoneNumberOrEmail: "",
@@ -21,7 +21,7 @@ export default function LogIn() {
   });
 
   // 폼 입력 상태 업데이트
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -55,7 +55,7 @@ export default function LogIn() {
   const router = useRouter();
 
   // 폼 제출 핸들러
-  const handleSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) event.preventDefault();
 
     if (validate()) {
@@ -83,12 +83,14 @@ export default function LogIn() {
       <LoginForm
         formData={formData}
         validationErrors={validationErrors}
-        handleChange={handleChange}
-      />{" "}
+        onChange={onChange}
+      />
       {/* 로그인 폼 컴포넌트 */}
-      <LoginButton handleSubmit={handleSubmit} /> {/* 로그인 버튼 컴포넌트 */}
+      <LoginButton onSubmit={onSubmit} /> {/* 로그인 버튼 컴포넌트 */}
       <FindPassword /> {/* 비밀번호 찾기 버튼 컴포넌트 */}
       <CreateNewAccount /> {/* 새 계정 생성 버튼 컴포넌트 */}
     </>
   );
-}
+};
+
+export default LogIn;

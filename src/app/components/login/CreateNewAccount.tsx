@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 
-export default function CreateNewAccount() {
+const CreateNewAccount = () => {
   const router = useRouter();
 
   const handleClick = () => {
@@ -19,4 +19,6 @@ export default function CreateNewAccount() {
       </div>
     </>
   );
-}
+};
+
+export default CreateNewAccount;

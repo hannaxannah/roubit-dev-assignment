@@ -11,7 +11,7 @@ type Todo = {
   completed: boolean;
 };
 
-export default function ToDoList() {
+const ToDoList = () => {
   const [todos, setTodos] = useState<Todo[]>([
     { id: "1", title: "Learn JavaScript project", completed: false },
     { id: "2", title: "Make a to do list app", completed: true },
@@ -52,4 +52,6 @@ export default function ToDoList() {
       {/* ToDo 진행률 컴포넌트 */}
     </>
   );
-}
+};
+
+export default ToDoList;

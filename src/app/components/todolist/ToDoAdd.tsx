@@ -2,13 +2,11 @@ import Image from "next/image";
 import button from "../../../../public/Frame 6110.svg";
 import { useState } from "react";
 
-type AddTodoFormProps = {
+interface AddTodoFormProps {
   onAdd: (todo: string) => void;
-};
+}
 
-export default function ToDoAdd(props: AddTodoFormProps) {
-  const { onAdd } = props;
-
+const ToDoAdd = ({ onAdd }: AddTodoFormProps) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,4 +43,6 @@ export default function ToDoAdd(props: AddTodoFormProps) {
       </form>
     </>
   );
-}
+};
+
+export default ToDoAdd;
