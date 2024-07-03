@@ -40,13 +40,16 @@ export default function ToDoList() {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
+  const completedTodos = todos.filter((todo) => todo.completed).length;
+
   return (
     <>
       <ToDoTitle /> {/*{ 타이틀 컴포넌트 */}
       <ToDoAdd onAdd={onAdd} /> {/* ToDo 추가 컴포넌트 */}
       <ToDoItem todos={todos} onCheck={onCheck} onDelete={onDelete} />
       {/* ToDo 목록 컴포넌트 */}
-      <ToDoProgress /> {/* ToDo 진행률 컴포넌트 */}
+      <ToDoProgress todos={todos.length} completedTodos={completedTodos} />
+      {/* ToDo 진행률 컴포넌트 */}
     </>
   );
 }
