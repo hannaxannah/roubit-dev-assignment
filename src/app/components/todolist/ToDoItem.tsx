@@ -11,15 +11,13 @@ type Todo = {
   completed: boolean;
 };
 
-type ToDoItemProps = {
+interface ToDoItemProps {
   todos: Todo[];
   onCheck: (id: string) => void;
   onDelete: (id: string) => void;
-};
+}
 
-export default function ToDoItem(props: ToDoItemProps) {
-  const { todos, onCheck, onDelete } = props;
-
+const ToDoItem = ({ todos, onCheck, onDelete }: ToDoItemProps) => {
   return (
     <>
       <ul className="w-[327px] h-[408px] mx-[24px] mt-[32px]">
@@ -27,7 +25,11 @@ export default function ToDoItem(props: ToDoItemProps) {
           <React.Fragment key={todo.id}>
             <li className="w-full h-[24px] flex items-center gap-[10px] my-[20px]">
               {/* todo check button */}
-              <button onClick={() => onCheck(todo.id)}>
+              <button
+                onClick={() => {
+                  onCheck(todo.id);
+                }}
+              >
                 {todo.completed ? (
                   <Image src={checked} alt={checked} width={24} height={24} />
                 ) : (
@@ -50,7 +52,9 @@ export default function ToDoItem(props: ToDoItemProps) {
               {/* todo delete */}
               <button
                 className="w-[24px] h-[24px]"
-                onClick={() => onDelete(todo.id)}
+                onClick={() => {
+                  onDelete(todo.id);
+                }}
               >
                 <Image src={button} alt={button} width={24} height={24} />
               </button>
@@ -70,4 +74,6 @@ export default function ToDoItem(props: ToDoItemProps) {
       </ul>
     </>
   );
-}
+};
+
+export default ToDoItem;
