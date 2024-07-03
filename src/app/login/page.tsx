@@ -5,6 +5,7 @@ import LoginButton from "../components/login/LoginButton";
 import FindPassword from "../components/login/FindPassword";
 import CreateNewAccount from "../components/login/CreateNewAccount";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LogIn() {
   // 폼 입력 상태
@@ -50,6 +51,9 @@ export default function LogIn() {
     return isValid;
   };
 
+  // router 객체
+  const router = useRouter();
+
   // 폼 제출 핸들러
   const handleSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) event.preventDefault();
@@ -68,8 +72,8 @@ export default function LogIn() {
         password: "",
       });
 
-      // 폼 제출 후 로그인 페이지로 이동
-      window.location.href = "/todolist";
+      // 폼 제출 투두리스트 페이지로 이동
+      router.push("/todolist");
     }
   };
 

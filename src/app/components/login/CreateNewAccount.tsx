@@ -1,6 +1,10 @@
+import { useRouter } from "next/navigation";
+
 export default function CreateNewAccount() {
+  const router = useRouter();
+
   const handleClick = () => {
-    window.location.href = "/signup";
+    router.push("/signup");
   };
 
   return (

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Header from "../components/Header";
 import SignUpTitle from "../components/signup/SignUpTitle";
 import SignUpForm from "../components/signup/SignUpForm";
@@ -53,7 +54,7 @@ export default function SignUp() {
     }
 
     if (!formData.username) {
-      errors.fullName = "username을 입력해주세요";
+      errors.username = "username을 입력해주세요";
       isValid = false;
     } else if (formData.username.length < 2 || formData.username.length > 12) {
       errors.username = "Username은 2글자 이상 12글자 이하로 입력해주세요";
@@ -61,7 +62,7 @@ export default function SignUp() {
     }
 
     if (!formData.password) {
-      errors.fullName = "password를 입력해주세요";
+      errors.password = "password를 입력해주세요";
       isValid = false;
     } else if (formData.password.length < 6 || formData.password.length > 12) {
       errors.password = "Password는 6글자 이상 12글자 이하로 입력해주세요";
@@ -71,6 +72,9 @@ export default function SignUp() {
     setValidationErrors(errors);
     return isValid;
   };
+
+  // router 객체
+  const router = useRouter();
 
   // 폼 제출 핸들러
   const handleSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
@@ -95,7 +99,7 @@ export default function SignUp() {
       });
 
       // 폼 제출 후 로그인 페이지로 이동
-      window.location.href = "/login";
+      router.push("/login");
     }
   };
 
