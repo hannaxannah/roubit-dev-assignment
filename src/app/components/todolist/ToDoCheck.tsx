@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import styles from "./todocheck.module.css";
 import checked from "../../../../public/checked.svg";
 import unchecked from "../../../../public/unchecked.svg";
 

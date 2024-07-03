@@ -1,43 +1,11 @@
+import Image from "next/image";
+import button from "../../../../public/trash-2.svg";
+
 export default function ToDoDelete() {
   return (
     <>
-      <button className="w-[21px] h-[21px]">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="22"
-          height="22"
-          viewBox="0 0 22 22"
-          fill="none"
-        >
-          <path
-            d="M3.125 5.75H4.875H18.875"
-            stroke="#929294"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M17.1243 5.75V18C17.1243 18.4641 16.9399 18.9092 16.6117 19.2374C16.2836 19.5656 15.8384 19.75 15.3743 19.75H6.62431C6.16018 19.75 5.71507 19.5656 5.38688 19.2374C5.05869 18.9092 4.87431 18.4641 4.87431 18V5.75M7.49931 5.75V4C7.49931 3.53587 7.68369 3.09075 8.01188 2.76256C8.34007 2.43437 8.78518 2.25 9.24931 2.25H12.7493C13.2134 2.25 13.6586 2.43437 13.9867 2.76256C14.3149 3.09075 14.4993 3.53587 14.4993 4V5.75"
-            stroke="#929294"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M9.25069 10.125V15.375"
-            stroke="#929294"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path
-            d="M12.7493 10.125V15.375"
-            stroke="#929294"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+      <button className="w-[24px] h-[24px]">
+        <Image src={button} alt={button} width={24} height={24} />
       </button>
     </>
   );

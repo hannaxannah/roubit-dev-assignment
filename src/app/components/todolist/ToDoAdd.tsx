@@ -1,45 +1,45 @@
-export default function ToDoAdd() {
+import Image from "next/image";
+import button from "../../../../public/Frame 6110.svg";
+import { useState } from "react";
+
+type AddTodoFormProps = {
+  onAdd: (todo: string) => void;
+};
+
+export default function ToDoAdd(props: AddTodoFormProps) {
+  const { onAdd } = props;
+
+  const [inputValue, setInputValue] = useState("");
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (inputValue && inputValue.trim()) {
+      onAdd(inputValue);
+      setInputValue("");
+      // console.log(inputValue);
+    }
+  };
+
   return (
     <>
       {/* To-Do Add */}
-      <form className="mx-[24px] mt-[18px] flex items-center">
+      <form
+        className="mx-[24px] mt-[18px] flex items-center"
+        onSubmit={handleSubmit}
+      >
         <input
-          className="w-[273px] h-[48px] px-[16px] py[10px] ring-[#B6B6B8] ring-[1px] rounded-[12px] placeholder:font-pretendard font-medium text-[14px] text-[#B6B6B8]"
+          className="w-[273px] h-[48px] px-[16px] py[10px] ring-[#B6B6B8] ring-[1px] rounded-[12px] placeholder:font-pretendard font-medium text-[14px] text-[#B6B6B8] focus:ring-[#26BD81] focus:outline-none focus:text-[#161617]"
           type="text"
           placeholder="Add your task"
+          onChange={handleChange}
         />
         <div className="w-[42px] h-[42px] ml-[12px] pb-[3px] rounded-[777.7px] bg-[#209C6A]">
-          <button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="42"
-              height="39"
-              viewBox="0 0 42 39"
-              fill="none"
-            >
-              <rect
-                x="42"
-                width="39"
-                height="42"
-                rx="19.5"
-                transform="rotate(90 42 0)"
-                fill="#26BD81"
-              />
-              <path
-                d="M13 18.5H29"
-                stroke="white"
-                stroke-width="2.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M21 11L21 26"
-                stroke="white"
-                stroke-width="2.4"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+          <button type="submit">
+            <Image src={button} alt={button} width={42} height={39} />
           </button>
         </div>
       </form>
