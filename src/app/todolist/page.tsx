@@ -40,13 +40,27 @@ const ToDoList = () => {
     setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
+  const onUpdate = (id: string, title: string) => {
+    // graphql로 수정하는 쿼리 날리기
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, title: title } : todo
+      )
+    );
+  };
+
   const completedTodos = todos.filter((todo) => todo.completed).length;
 
   return (
     <>
       <ToDoTitle /> {/*{ 타이틀 컴포넌트 */}
       <ToDoAdd onAdd={onAdd} /> {/* ToDo 추가 컴포넌트 */}
-      <ToDoItems todos={todos} onCheck={onCheck} onDelete={onDelete} />
+      <ToDoItems
+        todos={todos}
+        onCheck={onCheck}
+        onDelete={onDelete}
+        onUpdate={onUpdate}
+      />
       {/* ToDo 목록 컴포넌트 */}
       <ToDoProgress todos={todos.length} completedTodos={completedTodos} />
       {/* ToDo 진행률 컴포넌트 */}
