@@ -6,8 +6,12 @@ import Header from "../components/Header";
 import SignUpTitle from "../components/signup/SignUpTitle";
 import SignUpForm from "../components/signup/SignUpForm";
 import SignUpButton from "../components/signup/SignUpButton";
+import { useDispatch } from "react-redux";
+import { signUp } from "../redux/actions/userAction";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
+
   // 폼 입력 상태
   const [formData, setFormData] = useState({
     phoneNumberOrEmail: "",
@@ -97,6 +101,8 @@ const SignUp = () => {
         username: "",
         password: "",
       });
+
+      dispatch(signUp(formData));
 
       // 폼 제출 후 로그인 페이지로 이동
       router.push("/login");

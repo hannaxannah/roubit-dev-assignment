@@ -3,18 +3,10 @@ interface LogInFormProps {
     phoneNumberOrEmail: string;
     password: string;
   };
-  validationErrors: {
-    phoneNumberOrEmail: string;
-    password: string;
-  };
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const LoginForm = ({
-  formData,
-  validationErrors,
-  onChange,
-}: LogInFormProps) => {
+const LoginForm = ({ formData, onChange }: LogInFormProps) => {
   const formFields = [
     {
       name: "phoneNumberOrEmail",
@@ -22,7 +14,6 @@ const LoginForm = ({
       type: "text",
       placeholder: "Phone number or Email",
       value: formData.phoneNumberOrEmail,
-      error: validationErrors.phoneNumberOrEmail,
     },
     {
       name: "password",
@@ -30,7 +21,6 @@ const LoginForm = ({
       type: "password",
       placeholder: "Password",
       value: formData.password,
-      error: validationErrors.password,
     },
   ];
 
