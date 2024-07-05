@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { Todo } from "../ToDoItems";
+import { Todo } from "../../../todolist/page";
 import checked from "../../../../../public/checked.svg";
 import unchecked from "../../../../../public/unchecked.svg";
 import deleteButton from "../../../../../public/trash-2.svg";

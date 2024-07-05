@@ -5,7 +5,7 @@ import ToDoAdd from "../components/todolist/ToDoAdd";
 import ToDoItems from "../components/todolist/ToDoItems";
 import ToDoProgress from "../components/todolist/ToDoPrgress";
 
-type Todo = {
+export type Todo = {
   id: string;
   title: string;
   completed: boolean;

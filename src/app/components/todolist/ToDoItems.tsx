@@ -1,12 +1,7 @@
 import React from "react";
 import Outline from "./todoitems/Outline";
 import TodoListItem from "./todoitems/ToDoListItem";
-
-export type Todo = {
-  id: string;
-  title: string;
-  completed: boolean;
-};
+import { Todo } from "@/app/todolist/page";
 
 interface ToDoItemProps {
   todos: Todo[];
