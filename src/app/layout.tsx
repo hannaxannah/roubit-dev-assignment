@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Image from "next/image";
+import timeLight from "../../public/Time-Light.svg";
+import statusIcons from "../../public/Status Icons.svg";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,10 +19,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="w-[23.438rem] h-[50.75rem] m-auto border-[1px] border-solid border-black">
+      <body className="w-[375px] h-[812px] m-auto border-[1px] border-solid border-black">
         {/* Status Bar */}
-        <div className="w-100vw h-[2.75rem] border-[1px] border-solid border-blue">
-          Status Bar
+        <div className="w-100vw h-[44px] flex justify-between">
+          {/* Time / Light */}
+          <div className="w-[54px] h-[21px] mt-[12px] mb-[11px] ml-[21px] flex items-center">
+            <Image src={timeLight} alt={timeLight} width={54} height={21} />
+          </div>
+          {/* Status Icons */}
+          <div className="flex items-center gap-[4px] mt-[16px] mb-[14px] mr-[14px]">
+            <Image src={statusIcons} alt={statusIcons} width={69} height={14} />
+          </div>
         </div>
         {children}
       </body>

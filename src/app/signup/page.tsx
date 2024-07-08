@@ -1,66 +1,122 @@
-import Header from "../header/page";
+"use client";
 
-export default function SignUp() {
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Header from "../components/Header";
+import SignUpTitle from "../components/signup/SignUpTitle";
+import SignUpForm from "../components/signup/SignUpForm";
+import SignUpButton from "../components/signup/SignUpButton";
+
+const SignUp = () => {
+  // 폼 입력 상태
+  const [formData, setFormData] = useState({
+    phoneNumberOrEmail: "",
+    fullName: "",
+    username: "",
+    password: "",
+  });
+
+  // 입력 필드 유효성 상태
+  const [validationErrors, setValidationErrors] = useState({
+    phoneNumberOrEmail: "",
+    fullName: "",
+    username: "",
+    password: "",
+  });
+
+  // 폼 입력 상태 업데이트
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // 유효성 검사
+  const validate = (): boolean => {
+    let isValid = true;
+    const errors = {
+      phoneNumberOrEmail: "",
+      fullName: "",
+      username: "",
+      password: "",
+    };
+
+    if (!formData.phoneNumberOrEmail) {
+      errors.phoneNumberOrEmail = "Phone number or email을 입력해주세요";
+      isValid = false;
+    }
+
+    if (!formData.fullName) {
+      errors.fullName = "Full name을 입력해주세요";
+      isValid = false;
+    }
+
+    if (!formData.username) {
+      errors.username = "username을 입력해주세요";
+      isValid = false;
+    } else if (formData.username.length < 2 || formData.username.length > 12) {
+      errors.username = "Username은 2글자 이상 12글자 이하로 입력해주세요";
+      isValid = false;
+    }
+
+    if (!formData.password) {
+      errors.password = "password를 입력해주세요";
+      isValid = false;
+    } else if (formData.password.length < 6 || formData.password.length > 12) {
+      errors.password = "Password는 6글자 이상 12글자 이하로 입력해주세요";
+      isValid = false;
+    }
+
+    setValidationErrors(errors);
+    return isValid;
+  };
+
+  // router 객체
+  const router = useRouter();
+
+  // 폼 제출 핸들러
+  const handleSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
+    if (event) event.preventDefault();
+
+    if (validate()) {
+      console.log("Submitted data:", formData);
+
+      // 폼 제출 후 폼 입력 상태 초기화
+      setFormData({
+        phoneNumberOrEmail: "",
+        fullName: "",
+        username: "",
+        password: "",
+      });
+
+      setValidationErrors({
+        phoneNumberOrEmail: "",
+        fullName: "",
+        username: "",
+        password: "",
+      });
+
+      // 폼 제출 후 로그인 페이지로 이동
+      router.push("/login");
+    }
+  };
+
   return (
     <>
-      <Header />
-      <div className="mx-[1.5rem] mt-[0.5rem] font-pretendard font-semibold text-[1.5rem] leading-[2.375rem]">
-        Start your <br />
-        Phone number or Email
-      </div>
-      {/* SignUp Form */}
-      <form className="flex flex-col mx-[1.5rem] mt-[2rem] gap-6">
-        {/* Input 1 */}
-        <div className="flex flex-col gap-1">
-          <div className="font-pretendard font-medium text-[0.875rem]">
-            Phone number or Email
-          </div>
-          <input
-            className="w-full h-[3.25rem] px-[1rem] py-[0.625rem] ring-[#CCCCCE] rounded-t-xl rounded-b-xl ring-[0.063rem] placeholder-[#B6B6B8] font-pretendard font-medium text-[0.875rem] leading-[1.375rem] focus:ring-[0.125rem] focus:ring-[#26BD81] focus:outline-none focus:text-[#161617]"
-            type="text"
-            placeholder="Please enter your phone number or Email"
-          />
-        </div>
-        {/* Input 2 */}
-        <div className="flex flex-col gap-1">
-          <div className="font-pretendard font-medium text-[0.875rem]">
-            Full Name
-          </div>
-          <input
-            className="w-full h-[3.25rem] px-[1rem] py-[0.625rem] ring-[#CCCCCE] rounded-t-xl rounded-b-xl ring-[0.063rem] placeholder-[#B6B6B8] font-pretendard font-medium text-[0.875rem] leading-[1.375rem] focus:ring-[0.125rem] focus:ring-[#26BD81] focus:outline-none focus:text-[#161617]"
-            type="text"
-            placeholder="Please enter your Full name"
-          />
-        </div>
-        {/* Input 3 */}
-        <div className="flex flex-col gap-1">
-          <div className="font-pretendard font-medium text-[0.875rem]">
-            Username
-          </div>
-          <input
-            className="w-full h-[3.25rem] px-[1rem] py-[0.625rem] ring-[#CCCCCE] rounded-t-xl rounded-b-xl ring-[0.063rem] placeholder-[#B6B6B8] font-pretendard font-medium text-[0.875rem] leading-[1.375rem] focus:ring-[0.125rem] focus:ring-[#26BD81] focus:outline-none focus:text-[#161617]"
-            type="text"
-            placeholder="2-12 character username"
-          />
-        </div>
-        {/* Input 4 */}
-        <div className="flex flex-col gap-1">
-          <div className="font-pretendard font-medium text-[0.875rem]">
-            Password
-          </div>
-          <input
-            className="w-full h-[3.25rem] px-[1rem] py-[0.625rem] ring-[#CCCCCE] rounded-t-xl rounded-b-xl ring-[0.063rem] placeholder-[#B6B6B8] font-pretendard font-medium text-[0.875rem] leading-[1.375rem] focus:ring-[0.125rem] focus:ring-[#26BD81] focus:outline-none focus:text-[#161617]"
-            type="password"
-            placeholder="6-12 character password"
-          />
-        </div>
-      </form>
-      {/* Sign Up Button */}
-      <div className="mx-[1.5rem] mt-[7.625rem] w-[20.438rem] h-[3.25rem] bg-[#E8E8EA] rounded-t-xl rounded-b-xl hover:bg-[#209C6A]">
-        <button className="w-[20.438rem] h-[3.063rem] bg-[#E8E8EA] rounded-t-xl rounded-b-xl font-pretendard font-semibold text-[#CCCCCE] text-[1rem] leading-[1.5rem]  hover:bg-[#26BD81] hover:text-white">
-          Sign up
-        </button>
-      </div>
+      <Header /> {/* 헤더 컴포넌트 */}
+      <SignUpTitle /> {/* 회원가입 타이틀 컴포넌트 */}
+      <SignUpForm
+        formData={formData}
+        validationErrors={validationErrors}
+        handleChange={handleChange}
+      />
+      {/* 회원가입 폼 컴포넌트 */}
+      <SignUpButton handleSubmit={handleSubmit} />
+      {/* 회원가입 버튼 컴포넌트 */}
     </>
   );
-}
+};
+
+export default SignUp;
