@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { Todo } from "../../../todolist/page";
+import { Todo } from "../../../redux/actions/todoAction";
 import checked from "../../../../../public/checked.svg";
 import unchecked from "../../../../../public/unchecked.svg";
 import deleteButton from "../../../../../public/trash-2.svg";
+import { useDispatch } from "react-redux";
+import { toggleEditing, setNewTitle } from "../../../redux/actions/todoAction";
 
 interface TodoListItemProps {
   todo: Todo;
@@ -15,20 +17,22 @@ interface TodoListItemProps {
 }
 
 const TodoListItem = ({ todo, handler }: TodoListItemProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [newTitle, setNewTitle] = useState(todo.title);
+  const dispatch = useDispatch();
 
   // 수정 버튼 클릭
   const handleUpdateClick = () => {
-    setIsEditing((prev) => !prev);
-    if (isEditing === true) {
-      todo.title === newTitle ? null : handler.onUpdate(todo.id, newTitle);
-    }
+    todo.newTitle === ""
+      ? dispatch(setNewTitle(todo.id, todo.title))
+      : dispatch(toggleEditing(todo.id, todo.isEditing));
+
+    todo.isEditing &&
+      todo.title !== todo.newTitle &&
+      handler.onUpdate(todo.id, todo.newTitle);
   };
 
   // input에서 title 수정
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewTitle(e.target.value);
+    dispatch(setNewTitle(todo.id, e.target.value));
   };
 
   return (
@@ -46,11 +50,11 @@ const TodoListItem = ({ todo, handler }: TodoListItemProps) => {
         )}
       </button>
       {/* todo label or todo update */}
-      {isEditing ? (
+      {todo.isEditing ? (
         <input
           type="text"
-          value={newTitle}
           onChange={handleInputChange}
+          value={todo.newTitle}
           className="w-full font-pretendard font-medium text-[16px] text-[#323233] leading-[24px] tracking-tight"
         />
       ) : (
