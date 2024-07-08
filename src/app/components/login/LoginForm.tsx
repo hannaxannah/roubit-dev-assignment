@@ -13,14 +13,14 @@ const LoginForm = ({ formData, onChange }: LogInFormProps) => {
       label: "Phone number or Email",
       type: "text",
       placeholder: "Phone number or Email",
-      value: formData.phoneNumberOrEmail,
+      value: formData?.phoneNumberOrEmail,
     },
     {
       name: "password",
       label: "Password",
       type: "password",
       placeholder: "Password",
-      value: formData.password,
+      value: formData?.password,
     },
   ];
 

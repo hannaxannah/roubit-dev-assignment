@@ -6,25 +6,22 @@ import FindPassword from "../components/login/FindPassword";
 import CreateNewAccount from "../components/login/CreateNewAccount";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { logIn } from "../redux/actions/userAction";
+import { RootState } from "../redux/reducers/index";
+import { useSelector, useDispatch } from "react-redux";
+import { logIn, logInInput } from "../redux/actions/userAction";
 
 const LogIn = () => {
+  const { login } = useSelector((state: RootState) => ({
+    login: state.user.login,
+  }));
+  // console.log("login", login);
   const dispatch = useDispatch();
-
-  // 폼 입력 상태
-  const [formData, setFormData] = useState({
-    phoneNumberOrEmail: "",
-    password: "",
-  });
 
   // 폼 입력 상태 업데이트
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    // console.log(login);
+    dispatch(logInInput({ ...login, [name]: value }));
   };
 
   // router 객체
@@ -34,9 +31,15 @@ const LogIn = () => {
   const onSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) event.preventDefault();
 
-    console.log("Submitted data:", formData);
+    // console.log("Submitted data:", login);
 
-    dispatch(logIn(formData));
+    dispatch(logIn(login));
+    dispatch(
+      logInInput({
+        phoneNumberOrEmail: "",
+        password: "",
+      })
+    );
 
     // 폼 제출 투두리스트 페이지로 이동
     router.push("/todolist");
@@ -44,12 +47,11 @@ const LogIn = () => {
 
   return (
     <>
-      <RoubitLogo /> {/* 루빗 로고 컴포넌트 */}
-      <LoginForm formData={formData} onChange={onChange} />
-      {/* 로그인 폼 컴포넌트 */}
-      <LoginButton onSubmit={onSubmit} /> {/* 로그인 버튼 컴포넌트 */}
-      <FindPassword /> {/* 비밀번호 찾기 버튼 컴포넌트 */}
-      <CreateNewAccount /> {/* 새 계정 생성 버튼 컴포넌트 */}
+      <RoubitLogo /> {/* 루빗 로고 컴포ㄴ넌트 */}
+      <LoginForm formData={login} onChange={onChange} />
+      <LoginButton onSubmit={onSubmit} />
+      <FindPassword />
+      <CreateNewAccount />
     </>
   );
 };

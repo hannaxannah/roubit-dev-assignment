@@ -6,19 +6,16 @@ import Header from "../components/Header";
 import SignUpTitle from "../components/signup/SignUpTitle";
 import SignUpForm from "../components/signup/SignUpForm";
 import SignUpButton from "../components/signup/SignUpButton";
-import { useDispatch } from "react-redux";
-import { signUp } from "../redux/actions/userAction";
+import { RootState } from "../redux/reducers";
+import { useSelector, useDispatch } from "react-redux";
+import { signUp, signUpInput } from "../redux/actions/userAction";
 
 const SignUp = () => {
-  const dispatch = useDispatch();
+  const { signup } = useSelector((state: RootState) => ({
+    signup: state.user.signup,
+  }));
 
-  // 폼 입력 상태
-  const [formData, setFormData] = useState({
-    phoneNumberOrEmail: "",
-    fullName: "",
-    username: "",
-    password: "",
-  });
+  const dispatch = useDispatch();
 
   // 입력 필드 유효성 상태
   const [validationErrors, setValidationErrors] = useState({
@@ -31,50 +28,7 @@ const SignUp = () => {
   // 폼 입력 상태 업데이트
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  // 유효성 검사
-  const validate = (): boolean => {
-    let isValid = true;
-    const errors = {
-      phoneNumberOrEmail: "",
-      fullName: "",
-      username: "",
-      password: "",
-    };
-
-    if (!formData.phoneNumberOrEmail) {
-      errors.phoneNumberOrEmail = "Phone number or email을 입력해주세요";
-      isValid = false;
-    }
-
-    if (!formData.fullName) {
-      errors.fullName = "Full name을 입력해주세요";
-      isValid = false;
-    }
-
-    if (!formData.username) {
-      errors.username = "username을 입력해주세요";
-      isValid = false;
-    } else if (formData.username.length < 2 || formData.username.length > 12) {
-      errors.username = "Username은 2글자 이상 12글자 이하로 입력해주세요";
-      isValid = false;
-    }
-
-    if (!formData.password) {
-      errors.password = "password를 입력해주세요";
-      isValid = false;
-    } else if (formData.password.length < 6 || formData.password.length > 12) {
-      errors.password = "Password는 6글자 이상 12글자 이하로 입력해주세요";
-      isValid = false;
-    }
-
-    setValidationErrors(errors);
-    return isValid;
+    dispatch(signUpInput({ ...signup, [name]: value }));
   };
 
   // router 객체
@@ -84,29 +38,21 @@ const SignUp = () => {
   const handleSubmit = (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) event.preventDefault();
 
-    if (validate()) {
-      console.log("Submitted data:", formData);
+    // console.log("Submitted data:", signup);
 
-      // 폼 제출 후 폼 입력 상태 초기화
-      setFormData({
+    // 폼 제출 후 폼 입력 상태 초기화
+    dispatch(
+      signUpInput({
         phoneNumberOrEmail: "",
         fullName: "",
         username: "",
         password: "",
-      });
+      })
+    );
+    dispatch(signUp(signup));
 
-      setValidationErrors({
-        phoneNumberOrEmail: "",
-        fullName: "",
-        username: "",
-        password: "",
-      });
-
-      dispatch(signUp(formData));
-
-      // 폼 제출 후 로그인 페이지로 이동
-      router.push("/login");
-    }
+    // 폼 제출 후 로그인 페이지로 이동
+    router.push("/login");
   };
 
   return (
@@ -114,7 +60,7 @@ const SignUp = () => {
       <Header /> {/* 헤더 컴포넌트 */}
       <SignUpTitle /> {/* 회원가입 타이틀 컴포넌트 */}
       <SignUpForm
-        formData={formData}
+        formData={signup}
         validationErrors={validationErrors}
         handleChange={handleChange}
       />
