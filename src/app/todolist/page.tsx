@@ -14,7 +14,10 @@ import {
 } from "../redux/actions/todoAction";
 
 const ToDoList = () => {
-  const todos = useSelector((state: RootState) => state.todos.todos);
+  // const todos = useSelector((state: RootState) => state.todos.todos);
+  const { todos } = useSelector((state: RootState) => ({
+    todos: state.todos.todos,
+  }));
 
   const dispatch = useDispatch();
 
