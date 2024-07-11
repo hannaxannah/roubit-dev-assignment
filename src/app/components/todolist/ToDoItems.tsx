@@ -5,7 +5,7 @@ import { Todo } from "@/app/todolist/page";
 
 interface ToDoItemProps {
   todos: Todo[];
-  onCheck: (id: string) => void;
+  onCheck: (id: string, completed: boolean) => void;
   onDelete: (id: string) => void;
   onUpdate: (id: string, title: string) => void;
 }

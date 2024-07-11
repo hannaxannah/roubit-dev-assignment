@@ -8,7 +8,7 @@ import deleteButton from "../../../../../public/trash-2.svg";
 interface TodoListItemProps {
   todo: Todo;
   handler: {
-    onCheck: (id: string) => void;
+    onCheck: (id: string, completed: boolean) => void;
     onDelete: (id: string) => void;
     onUpdate: (id: string, title: string) => void;
   };
@@ -36,7 +36,7 @@ const TodoListItem = ({ todo, handler }: TodoListItemProps) => {
       {/* todo check button */}
       <button
         onClick={() => {
-          handler.onCheck(todo.id);
+          handler.onCheck(todo.id, todo.completed);
         }}
       >
         {todo.completed ? (

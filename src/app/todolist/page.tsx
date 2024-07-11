@@ -1,9 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import ToDoTitle from "../components/todolist/ToDoTitle";
 import ToDoAdd from "../components/todolist/ToDoAdd";
 import ToDoItems from "../components/todolist/ToDoItems";
 import ToDoProgress from "../components/todolist/ToDoPrgress";
+import {
+  fetchGetTodos,
+  fetchCreateTodo,
+  fetchDeleteTodo,
+  fetchCheckTodo,
+  fetchUpdateTodo,
+} from "../APIs/todoAPI";
 
 export type Todo = {
   id: string;
@@ -12,39 +20,51 @@ export type Todo = {
 };
 
 const ToDoList = () => {
-  const [todos, setTodos] = useState<Todo[]>([
-    { id: "1", title: "Learn JavaScript project", completed: false },
-    { id: "2", title: "Make a to do list app", completed: true },
-  ]); // graphql로 가져오기
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  const onAdd = (todo: string) => {
-    // 임시, graphql로 input하고 반환된 결과값에서 id,title, completed 뽑아서 저장
-    const newTodo = {
-      id: "123",
-      title: todo,
-      completed: false,
+  useEffect(() => {
+    const getTodos = async () => {
+      try {
+        const fetchedTodos = await fetchGetTodos();
+        if (fetchedTodos) {
+          setTodos(fetchedTodos);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     };
+
+    getTodos();
+  }, []);
+
+  const onAdd = async (todo: string) => {
+    const newTodo = await fetchCreateTodo(todo);
     setTodos((prevTodos) => [...prevTodos, newTodo]);
   };
 
-  const onCheck = (id: string) => {
+  const onCheck = async (id: string, completed: boolean) => {
+    const checkedTodo = await fetchCheckTodo(id, completed);
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        todo.id === checkedTodo.id
+          ? { ...todo, completed: !todo.completed }
+          : todo
       )
     );
   };
 
-  const onDelete = (id: string) => {
-    // graphql로 지우는 쿼리 날리기
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  const onDelete = async (id: string) => {
+    const deleteTodo = await fetchDeleteTodo(id);
+    setTodos((prevTodos) =>
+      prevTodos.filter((todo) => todo.id !== deleteTodo.id)
+    );
   };
 
-  const onUpdate = (id: string, title: string) => {
-    // graphql로 수정하는 쿼리 날리기
+  const onUpdate = async (id: string, title: string) => {
+    const updateTodo = await fetchUpdateTodo(id, title);
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, title: title } : todo
+        todo.id === updateTodo.id ? { ...todo, title: updateTodo.title } : todo
       )
     );
   };
@@ -53,17 +73,15 @@ const ToDoList = () => {
 
   return (
     <>
-      <ToDoTitle /> {/*{ 타이틀 컴포넌트 */}
-      <ToDoAdd onAdd={onAdd} /> {/* ToDo 추가 컴포넌트 */}
+      <ToDoTitle />
+      <ToDoAdd onAdd={onAdd} />
       <ToDoItems
         todos={todos}
         onCheck={onCheck}
         onDelete={onDelete}
         onUpdate={onUpdate}
       />
-      {/* ToDo 목록 컴포넌트 */}
       <ToDoProgress todos={todos.length} completedTodos={completedTodos} />
-      {/* ToDo 진행률 컴포넌트 */}
     </>
   );
 };
