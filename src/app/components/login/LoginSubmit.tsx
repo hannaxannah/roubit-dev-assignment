@@ -1,3 +1,5 @@
+"use client";
+
 import LoginForm from "./loginsubmit/LoginForm";
 import LoginButton from "./loginsubmit/LoginButton";
 import { useState } from "react";

@@ -1,4 +1,3 @@
-"use client";
 import RoubitLogo from "../components/login/RoubitLogo";
 import LoginSubmit from "../components/login/LoginSubmit";
 import FindPassword from "../components/login/FindPassword";

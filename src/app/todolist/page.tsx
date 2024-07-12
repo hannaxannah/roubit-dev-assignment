@@ -1,4 +1,3 @@
-"use client";
 import ToDoTitle from "../components/todolist/ToDoTitle";
 import ToDo from "../components/todolist/ToDo";
 

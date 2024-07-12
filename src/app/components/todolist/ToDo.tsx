@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import ToDoAdd from "./todo/ToDoAdd";
 import ToDoItems from "./todo/ToDoItems";
