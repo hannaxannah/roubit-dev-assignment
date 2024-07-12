@@ -1,6 +1,6 @@
 import React from "react";
-import Outline from "./todoitems/Outline";
-import TodoListItem from "./todoitems/ToDoListItem";
+import Outline from "../todoitems/Outline";
+import TodoListItem from "../todoitems/ToDoListItem";
 import { Todo } from "@/app/todolist/page";
 
 interface ToDoItemProps {

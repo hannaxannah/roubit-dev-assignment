@@ -64,7 +64,7 @@ const TodoListItem = ({ todo, handler }: TodoListItemProps) => {
       )}
       {/* todo update button */}
       <button className="w-[24px] h-[24px]" onClick={handleUpdateClick}>
-        <Image src={deleteButton} alt={deleteButton} width={24} height={24} />
+        <Image src={deleteButton} alt="deleteButton" width={24} height={24} />
       </button>
       {/* todo delete button */}
       <button
@@ -73,7 +73,7 @@ const TodoListItem = ({ todo, handler }: TodoListItemProps) => {
           handler.onDelete(todo.id);
         }}
       >
-        <Image src={deleteButton} alt={deleteButton} width={24} height={24} />
+        <Image src={deleteButton} alt="deleteButton" width={24} height={24} />
       </button>
     </li>
   );
