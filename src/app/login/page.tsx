@@ -4,11 +4,15 @@ import LoginForm from "../components/login/LoginForm";
 import LoginButton from "../components/login/LoginButton";
 import FindPassword from "../components/login/FindPassword";
 import CreateNewAccount from "../components/login/CreateNewAccount";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { RootState } from "../redux/reducers/index";
 import { useSelector, useDispatch } from "react-redux";
 import { logIn, logInInput } from "../redux/actions/userAction";
+
+export interface logInFormData {
+  phoneNumberOrEmail: string;
+  password: string;
+}
 
 const LogIn = () => {
   const { login } = useSelector((state: RootState) => ({

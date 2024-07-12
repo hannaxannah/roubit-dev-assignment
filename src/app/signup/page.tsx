@@ -10,20 +10,19 @@ import { RootState } from "../redux/reducers";
 import { useSelector, useDispatch } from "react-redux";
 import { signUp, signUpInput } from "../redux/actions/userAction";
 
+export type signUpFormData = {
+  phoneNumberOrEmail: string;
+  fullName: string;
+  username: string;
+  password: string;
+};
+
 const SignUp = () => {
   const { signup } = useSelector((state: RootState) => ({
     signup: state.user.signup,
   }));
 
   const dispatch = useDispatch();
-
-  // 입력 필드 유효성 상태
-  const [validationErrors, setValidationErrors] = useState({
-    phoneNumberOrEmail: "",
-    fullName: "",
-    username: "",
-    password: "",
-  });
 
   // 폼 입력 상태 업데이트
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,11 +58,7 @@ const SignUp = () => {
     <>
       <Header /> {/* 헤더 컴포넌트 */}
       <SignUpTitle /> {/* 회원가입 타이틀 컴포넌트 */}
-      <SignUpForm
-        formData={signup}
-        validationErrors={validationErrors}
-        handleChange={handleChange}
-      />
+      <SignUpForm formData={signup} handleChange={handleChange} />
       {/* 회원가입 폼 컴포넌트 */}
       <SignUpButton handleSubmit={handleSubmit} />
       {/* 회원가입 버튼 컴포넌트 */}

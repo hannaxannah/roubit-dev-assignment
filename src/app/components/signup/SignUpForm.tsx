@@ -1,24 +1,11 @@
+import { signUpFormData } from "@/app/signup/page";
+
 interface SignUpFormProps {
-  formData: {
-    phoneNumberOrEmail: string;
-    fullName: string;
-    username: string;
-    password: string;
-  };
-  validationErrors: {
-    phoneNumberOrEmail: string;
-    fullName: string;
-    username: string;
-    password: string;
-  };
+  formData: signUpFormData;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SignUpForm = ({
-  formData,
-  validationErrors,
-  handleChange,
-}: SignUpFormProps) => {
+const SignUpForm = ({ formData, handleChange }: SignUpFormProps) => {
   // 각 입력 요소의 정보 배열
   const formFields = [
     {
@@ -27,7 +14,6 @@ const SignUpForm = ({
       type: "text",
       placeholder: "Please enter your phone number or Email",
       value: formData.phoneNumberOrEmail,
-      error: validationErrors.phoneNumberOrEmail,
     },
     {
       name: "fullName",
@@ -35,7 +21,6 @@ const SignUpForm = ({
       type: "text",
       placeholder: "Please enter your Full name",
       value: formData.fullName,
-      error: validationErrors.fullName,
     },
     {
       name: "username",
@@ -43,7 +28,6 @@ const SignUpForm = ({
       type: "text",
       placeholder: "2-12 character username",
       value: formData.username,
-      error: validationErrors.username,
     },
     {
       name: "password",
@@ -51,7 +35,6 @@ const SignUpForm = ({
       type: "password",
       placeholder: "6-12 character password",
       value: formData.password,
-      error: validationErrors.password,
     },
   ];
 

@@ -13,6 +13,12 @@ import {
   deleteTodo,
 } from "../redux/actions/todoAction";
 
+export type Todo = {
+  id: string;
+  title: string;
+  completed: boolean;
+};
+
 const ToDoList = () => {
   // const todos = useSelector((state: RootState) => state.todos.todos);
   const { todos } = useSelector((state: RootState) => ({
