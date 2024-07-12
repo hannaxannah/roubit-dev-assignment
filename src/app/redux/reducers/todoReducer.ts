@@ -78,7 +78,7 @@ const todoReducer = (state = initialState, action: Action): TodoState => {
           todo.id === action.id
             ? {
                 ...todo,
-                isEditing: !todo.isEditing,
+                isEditing: !action.isEditing,
               }
             : todo
         ),

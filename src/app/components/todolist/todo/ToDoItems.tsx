@@ -1,7 +1,7 @@
 import React from "react";
-import Outline from "./todoitems/Outline";
-import TodoListItem from "./todoitems/ToDoListItem";
-import { Todo } from "../../redux/actions/todoAction";
+import Outline from "../todoitems/Outline";
+import TodoListItem from "../todoitems/ToDoListItem";
+import { Todo } from "../../../redux/actions/todoAction";
 
 interface ToDoItemProps {
   todos: Todo[];

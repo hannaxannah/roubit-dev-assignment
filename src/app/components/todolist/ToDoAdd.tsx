@@ -2,13 +2,9 @@ import Image from "next/image";
 import button from "../../../../public/Frame 6110.svg";
 import { RootState } from "../../redux/reducers/index";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodoInput } from "@/app/redux/actions/todoAction";
+import { addTodo, addTodoInput } from "@/app/redux/actions/todoAction";
 
-interface AddTodoFormProps {
-  onAdd: (todo: string) => void;
-}
-
-const ToDoAdd = ({ onAdd }: AddTodoFormProps) => {
+const ToDoAdd = () => {
   const inputValue = useSelector(
     (state: RootState) => state.todos.addInputValue
   );
@@ -21,7 +17,15 @@ const ToDoAdd = ({ onAdd }: AddTodoFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputValue && inputValue.trim()) {
-      onAdd(inputValue);
+      // onAdd(inputValue);
+      const newTodo = {
+        id: "123",
+        title: inputValue,
+        completed: false,
+        isEditing: false,
+        newTitle: "",
+      };
+      dispatch(addTodo(newTodo));
       dispatch(addTodoInput(""));
     }
   };
