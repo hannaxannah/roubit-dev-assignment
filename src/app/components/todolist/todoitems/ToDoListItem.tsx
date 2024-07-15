@@ -8,7 +8,7 @@ import deleteButton from "../../../../../public/trash-2.svg";
 interface TodoListItemProps {
   todo: Todo;
   handler: {
-    onCheck: (id: string) => void;
+    onCheck: (id: string, completed: boolean) => void;
     onDelete: (id: string) => void;
     onUpdate: (id: string, title: string) => void;
   };
@@ -36,7 +36,7 @@ const TodoListItem = ({ todo, handler }: TodoListItemProps) => {
       {/* todo check button */}
       <button
         onClick={() => {
-          handler.onCheck(todo.id);
+          handler.onCheck(todo.id, todo.completed);
         }}
       >
         {todo.completed ? (
@@ -64,7 +64,7 @@ const TodoListItem = ({ todo, handler }: TodoListItemProps) => {
       )}
       {/* todo update button */}
       <button className="w-[24px] h-[24px]" onClick={handleUpdateClick}>
-        <Image src={deleteButton} alt={deleteButton} width={24} height={24} />
+        <Image src={deleteButton} alt="deleteButton" width={24} height={24} />
       </button>
       {/* todo delete button */}
       <button
@@ -73,7 +73,7 @@ const TodoListItem = ({ todo, handler }: TodoListItemProps) => {
           handler.onDelete(todo.id);
         }}
       >
-        <Image src={deleteButton} alt={deleteButton} width={24} height={24} />
+        <Image src={deleteButton} alt="deleteButton" width={24} height={24} />
       </button>
     </li>
   );
