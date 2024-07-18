@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Image from "next/image";
 import timeLight from "../../public/Time-Light.svg";
 import statusIcons from "../../public/Status Icons.svg";
-
-const inter = Inter({ subsets: ["latin"] });
+import ReduxProvider from "./redux-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,7 +29,7 @@ export default function RootLayout({
             <Image src={statusIcons} alt={statusIcons} width={69} height={14} />
           </div>
         </div>
-        {children}
+        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );

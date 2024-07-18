@@ -1,19 +1,23 @@
-interface ProgressPros {
-  todos: number;
-  completedTodos: number;
-}
-const ToDoProgress = (props: ProgressPros) => {
-  const { todos, completedTodos } = props;
+import { RootState } from "../../../redux/reducers/index";
+import { useSelector } from "react-redux";
+
+const ToDoProgress = () => {
+  const { todos } = useSelector((state: RootState) => ({
+    todos: state.todos.todos,
+  }));
+
+  const completedTodos = todos.filter((todo) => todo.completed).length;
 
   // 진행률 바 길이
-  const progressWidth = todos > 0 ? (completedTodos / todos) * 100 : 0;
+  const progressWidth =
+    todos.length > 0 ? (completedTodos / todos.length) * 100 : 0;
 
   return (
     <>
       {/* Tasks Done */}
       <div className="w-[327px] mx-[24px] flex flex-col items-center fixed top-[706px]">
         <div className="font-pretendard font-semibold text-[14px] text-[#26BD81] tracking-tight">
-          {completedTodos} of {todos} tasks done
+          {completedTodos} of {todos.length} tasks done
         </div>
         {/* 진행 바 배경 */}
         <div className="w-full h-[20px] mt-[10px] px-[16px] py-[5px] flex bg-[#26BD81] rounded-[12px]">

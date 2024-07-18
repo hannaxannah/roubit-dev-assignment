@@ -1,24 +1,22 @@
-interface SignUpFormProps {
-  formData: {
-    phoneNumberOrEmail: string;
-    fullName: string;
-    username: string;
-    password: string;
-  };
-  validationErrors: {
-    phoneNumberOrEmail: string;
-    fullName: string;
-    username: string;
-    password: string;
-  };
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+"use client";
 
-const SignUpForm = ({
-  formData,
-  validationErrors,
-  handleChange,
-}: SignUpFormProps) => {
+import { RootState } from "@/app/redux/reducers";
+import { useSelector, useDispatch } from "react-redux";
+import { signUpInput } from "@/app/redux/actions/userAction";
+
+const SignUpForm = () => {
+  const { signupFormData } = useSelector((state: RootState) => ({
+    signupFormData: state.user.signupFormData,
+  }));
+
+  const dispatch = useDispatch();
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    // console.log(name, value);
+    dispatch(signUpInput({ ...signupFormData, [name]: value }));
+  };
+
   // 각 입력 요소의 정보 배열
   const formFields = [
     {
@@ -26,32 +24,28 @@ const SignUpForm = ({
       label: "Phone number or Email",
       type: "text",
       placeholder: "Please enter your phone number or Email",
-      value: formData.phoneNumberOrEmail,
-      error: validationErrors.phoneNumberOrEmail,
+      value: signupFormData.phoneNumberOrEmail,
     },
     {
       name: "fullName",
       label: "Full Name",
       type: "text",
       placeholder: "Please enter your Full name",
-      value: formData.fullName,
-      error: validationErrors.fullName,
+      value: signupFormData.fullName,
     },
     {
       name: "username",
       label: "Username",
       type: "text",
       placeholder: "2-12 character username",
-      value: formData.username,
-      error: validationErrors.username,
+      value: signupFormData.username,
     },
     {
       name: "password",
       label: "Password",
       type: "password",
       placeholder: "6-12 character password",
-      value: formData.password,
-      error: validationErrors.password,
+      value: signupFormData.password,
     },
   ];
 
