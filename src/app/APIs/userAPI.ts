@@ -24,7 +24,7 @@ export interface SignInReturn {
 }
 
 export const fetchSignUp = async ({
-  phoneNumberOrEmail,
+  phoneNumberOrEmail: email,
   password,
   fullName,
   username,
@@ -34,10 +34,10 @@ export const fetchSignUp = async ({
       query: SIGN_UP_QUERY,
       variables: {
         createUserInput: {
-          email: phoneNumberOrEmail,
-          password: password,
-          fullName: fullName,
-          username: username,
+          email,
+          password,
+          fullName,
+          username,
         },
       },
     });
@@ -60,7 +60,7 @@ export const fetchSignUp = async ({
 };
 
 export const fetchSignIn = async ({
-  phoneNumberOrEmail,
+  phoneNumberOrEmail: email,
   password,
 }: logInFormData): Promise<SignInReturn> => {
   try {
@@ -69,8 +69,8 @@ export const fetchSignIn = async ({
       query: SIGN_IN_QUERY,
       variables: {
         loginInput: {
-          email: phoneNumberOrEmail,
-          password: password,
+          email,
+          password,
         },
       },
     });
