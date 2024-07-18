@@ -1,61 +1,149 @@
+import { Reducer } from "redux";
+
 import {
-  LOG_IN,
+  LOG_IN_REQUEST,
+  LOG_IN_SUCCESS,
+  LOG_IN_FAILURE,
   LOG_IN_INPUT,
-  SIGN_UP,
+  LoginFormData,
+  SIGN_UP_REQUEST,
+  SIGN_UP_SUCCESS,
+  SIGN_UP_FAILURE,
   SIGN_UP_INPUT,
-  loginFormData,
-  signupFormData,
+  SignupFormData,
 } from "../actions/userAction";
 
-interface userState {
-  login: loginFormData;
-  signup: signupFormData;
+type Response = {
+  message: string;
+  loading: boolean;
+};
+
+interface UserState {
+  loginFormData: LoginFormData;
+  signupFormData: SignupFormData;
+  response: Response;
+  accessToken: string;
+  route: string;
 }
 
-const initialState: userState = {
-  login: {
+const initialState: UserState = {
+  loginFormData: {
     phoneNumberOrEmail: "",
     password: "",
   },
-  signup: {
+  signupFormData: {
     phoneNumberOrEmail: "",
     fullName: "",
     username: "",
     password: "",
   },
+  response: {
+    message: "",
+    loading: false,
+  },
+  accessToken: "",
+  route: "",
 };
 
-type Action =
-  | { type: typeof LOG_IN; loginFormData: loginFormData }
-  | { type: typeof LOG_IN_INPUT; loginFormData: loginFormData }
-  | { type: typeof SIGN_UP; signupFormData: signupFormData }
-  | { type: typeof SIGN_UP_INPUT; signupFormData: signupFormData };
+export type Action =
+  | { type: typeof LOG_IN_REQUEST; loginFormData: LoginFormData }
+  | { type: typeof LOG_IN_SUCCESS; accessToken: string }
+  | { type: typeof LOG_IN_FAILURE; error: string }
+  | { type: typeof LOG_IN_INPUT; loginFormData: LoginFormData }
+  | { type: typeof SIGN_UP_REQUEST; signupFormData: SignupFormData }
+  | { type: typeof SIGN_UP_SUCCESS; message: string }
+  | { type: typeof SIGN_UP_FAILURE; error: string }
+  | { type: typeof SIGN_UP_INPUT; signupFormData: SignupFormData };
 
-const userReducer = (state = initialState, action: Action): userState => {
+const userReducer: Reducer<UserState, Action> = (
+  state = initialState,
+  action: Action
+): UserState => {
   switch (action.type) {
-    case LOG_IN:
-      // console.log("LOG_IN action received:", action.loginFormData);
+    case LOG_IN_REQUEST:
       return {
         ...state,
-        login: action.loginFormData,
+        response: { loading: true, message: "request" },
+        accessToken: "",
+        loginFormData: action.loginFormData,
+        route: "",
+      };
+    case LOG_IN_SUCCESS:
+      return {
+        ...state,
+        response: { loading: false, message: "success" },
+        accessToken: action.accessToken,
+        loginFormData: {
+          phoneNumberOrEmail: "",
+          password: "",
+        },
+        route: "/todolist",
+      };
+    case LOG_IN_FAILURE:
+      return {
+        ...state,
+        response: { loading: false, message: action.error },
+        accessToken: "",
+        route: "",
       };
     case LOG_IN_INPUT:
-      // console.log("LOG_IN_INPUT action received:", action.loginFormData);
       return {
         ...state,
-        login: { ...state.login, ...action.loginFormData },
+        loginFormData: {
+          ...state.loginFormData,
+          phoneNumberOrEmail: action.loginFormData.phoneNumberOrEmail,
+          password: action.loginFormData.password,
+        },
+        route: "",
       };
-    case SIGN_UP:
-      // console.log("SIGN_UP action received:", action.signupFormData);
+    case SIGN_UP_REQUEST:
       return {
         ...state,
-        signup: action.signupFormData,
+        response: {
+          loading: true,
+          message: "sign up requested",
+        },
+        signupFormData: action.signupFormData,
+        route: "",
+      };
+    case SIGN_UP_SUCCESS:
+      return {
+        ...state,
+        response: {
+          loading: false,
+          message: "success",
+        },
+        signupFormData: {
+          phoneNumberOrEmail: "",
+          fullName: "",
+          username: "",
+          password: "",
+        },
+        route: "/login",
+      };
+    case SIGN_UP_FAILURE:
+      return {
+        ...state,
+        response: { loading: false, message: action.error },
+        signupFormData: {
+          phoneNumberOrEmail: "",
+          fullName: "",
+          username: "",
+          password: "",
+        },
+        route: "",
       };
     case SIGN_UP_INPUT:
-      // console.log("SIGN_UP_INPUT action received:", action.signupFormData);
       return {
         ...state,
-        signup: { ...state.signup, ...action.signupFormData },
+        signupFormData: {
+          ...state.signupFormData,
+          phoneNumberOrEmail: action.signupFormData.phoneNumberOrEmail,
+          fullName: action.signupFormData.fullName,
+          username: action.signupFormData.username,
+          password: action.signupFormData.password,
+        },
+        route: "",
       };
     default:
       return state;

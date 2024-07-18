@@ -1,11 +1,22 @@
-import { signUpFormData } from "@/app/signup/page";
+"use client";
 
-interface SignUpFormProps {
-  formData: signUpFormData;
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import { RootState } from "@/app/redux/reducers";
+import { useSelector, useDispatch } from "react-redux";
+import { signUpInput } from "@/app/redux/actions/userAction";
 
-const SignUpForm = ({ formData, handleChange }: SignUpFormProps) => {
+const SignUpForm = () => {
+  const { signupFormData } = useSelector((state: RootState) => ({
+    signupFormData: state.user.signupFormData,
+  }));
+
+  const dispatch = useDispatch();
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    // console.log(name, value);
+    dispatch(signUpInput({ ...signupFormData, [name]: value }));
+  };
+
   // 각 입력 요소의 정보 배열
   const formFields = [
     {
@@ -13,28 +24,28 @@ const SignUpForm = ({ formData, handleChange }: SignUpFormProps) => {
       label: "Phone number or Email",
       type: "text",
       placeholder: "Please enter your phone number or Email",
-      value: formData.phoneNumberOrEmail,
+      value: signupFormData.phoneNumberOrEmail,
     },
     {
       name: "fullName",
       label: "Full Name",
       type: "text",
       placeholder: "Please enter your Full name",
-      value: formData.fullName,
+      value: signupFormData.fullName,
     },
     {
       name: "username",
       label: "Username",
       type: "text",
       placeholder: "2-12 character username",
-      value: formData.username,
+      value: signupFormData.username,
     },
     {
       name: "password",
       label: "Password",
       type: "password",
       placeholder: "6-12 character password",
-      value: formData.password,
+      value: signupFormData.password,
     },
   ];
 

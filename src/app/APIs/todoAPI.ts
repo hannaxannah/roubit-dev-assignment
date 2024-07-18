@@ -9,7 +9,11 @@ import {
 } from "./todoQuery";
 import { Todo } from "../todolist/page";
 
-const accessToken = localStorage.getItem("accessToken");
+let accessToken: string | null = null;
+
+if (typeof window !== "undefined") {
+  accessToken = localStorage.getItem("accessToken");
+}
 
 export const fetchGetTodos = async (): Promise<Todo[]> => {
   try {
@@ -80,7 +84,8 @@ export const fetchDeleteTodo = async (id: string) => {
         },
       }
     );
-    const fetchedDeletedTodo = response.data.data.deletedTodolist.data.todolist;
+    const fetchedDeletedTodo =
+      response.data.data.deletedTodolist.data.todolist.id;
     // console.log(fetchedDeletedTodo);
     return fetchedDeletedTodo;
   } catch (error) {
@@ -97,7 +102,7 @@ export const fetchCheckTodo = async (id: string, completed: boolean) => {
         variables: {
           input: {
             id: id,
-            completed: !completed,
+            completed: completed,
           },
         },
       },

@@ -2,12 +2,12 @@ import Image from "next/image";
 import button from "../../../../public/Frame 6110.svg";
 import { RootState } from "../../redux/reducers/index";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, addTodoInput } from "@/app/redux/actions/todoAction";
+import { addTodoRequest, addTodoInput } from "@/app/redux/actions/todoAction";
 
 const ToDoAdd = () => {
-  const inputValue = useSelector(
-    (state: RootState) => state.todos.addInputValue
-  );
+  const inputValue = useSelector((state: RootState) => state.todos.todo.title);
+  // console.log("inputvalue", inputValue);
+
   const dispatch = useDispatch();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,16 +17,7 @@ const ToDoAdd = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputValue && inputValue.trim()) {
-      // onAdd(inputValue);
-      const newTodo = {
-        id: "123",
-        title: inputValue,
-        completed: false,
-        isEditing: false,
-        newTitle: "",
-      };
-      dispatch(addTodo(newTodo));
-      dispatch(addTodoInput(""));
+      dispatch(addTodoRequest(inputValue));
     }
   };
 
