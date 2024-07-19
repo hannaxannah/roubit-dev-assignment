@@ -1,57 +1,54 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import checked from "../../../../../public/checked.svg";
 import unchecked from "../../../../../public/unchecked.svg";
 import deleteButton from "../../../../../public/trash-2.svg";
-import { useDispatch, useSelector } from "react-redux";
+import { Todo } from "@/app/todolist/page";
+import useTodoStore from "@/app/todolist/zustand/todoStore";
 import {
-  Todo,
-  checkTodoRequest,
-  toggleEditing,
-  updateTodoSetting,
-  updateTodoRequest,
-  updateTodoInput,
-  deleteTodoRequest,
-} from "../../../redux/actions/todoAction";
-import { RootState } from "@/app/redux/reducers";
+  useCheckTodoMutation,
+  useUpdateTodoMutation,
+  useDeleteTodoMutation,
+} from "@/app/todolist/tanstack-query/todoMutation";
 
 interface TodoListItemProps {
   todo: Todo;
 }
 
 const TodoListItem = ({ todo }: TodoListItemProps) => {
-  const dispatch = useDispatch();
+  const todoInput = useTodoStore((state) => state.todo);
+  const toggle = useTodoStore((state) => state.toggle);
+  const updateTodoInput = useTodoStore((state) => state.updateTodoInput);
 
-  const { updateTodo } = useSelector((state: RootState) => ({
-    updateTodo: state.todos.todo,
-  }));
-  // console.log(updateTodo);
+  const checkMutation = useCheckTodoMutation();
+  const updateMutation = useUpdateTodoMutation();
+  const deleteMutation = useDeleteTodoMutation();
 
   // todo check 클릭
   const handleCheckClick = () => {
-    // console.log("check click,", todo.id, todo.completed);
-    dispatch(checkTodoRequest(todo.id, !todo.completed));
+    checkMutation.mutate({ id: todo.id, completed: !todo.completed });
   };
 
   // 수정 버튼 클릭
   const handleUpdateClick = () => {
-    // console.log("update click,", todo.id, todo.title);
-
-    if (!updateTodo.isEditing) {
-      dispatch(updateTodoInput(todo.id, todo.title));
-      dispatch(toggleEditing(todo.id, true));
+    if (!todoInput.isEditing) {
+      console.log("toggle2", todoInput);
+      updateTodoInput(todo.id, todo.title);
+      console.log("updateTodoInput", todoInput);
+      toggle(todo.id, true);
     } else {
-      dispatch(updateTodoRequest(todo.id, updateTodo.newTitle));
+      updateMutation.mutate({ id: todo.id, title: todoInput.title });
     }
   };
 
   // title 수정
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(updateTodoInput(todo.id, e.target.value));
+    updateTodoInput(todo.id, e.target.value);
   };
 
+  // 삭제 버튼 클릭
   const handleDeleteClick = () => {
-    dispatch(deleteTodoRequest(todo.id));
+    deleteMutation.mutate(todo.id);
   };
 
   return (
@@ -65,11 +62,11 @@ const TodoListItem = ({ todo }: TodoListItemProps) => {
         )}
       </button>
       {/* todo label or todo update */}
-      {todo.id == updateTodo.id && updateTodo.isEditing ? (
+      {todo.id == todoInput.id && todoInput.isEditing ? (
         <input
           type="text"
           onChange={handleInputChange}
-          value={updateTodo.newTitle}
+          value={todoInput.title}
           className="w-full font-pretendard font-medium text-[16px] text-[#323233] leading-[24px] tracking-tight"
         />
       ) : (

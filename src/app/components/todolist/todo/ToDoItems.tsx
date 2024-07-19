@@ -1,13 +1,10 @@
 import React from "react";
 import Outline from "../todoitems/Outline";
 import TodoListItem from "../todoitems/ToDoListItem";
-import { RootState } from "../../../redux/reducers/index";
-import { useSelector } from "react-redux";
+import useTodoListQuery from "@/app/todolist/tanstack-query/todoQuery";
+
 const ToDoItems = () => {
-  const { todos } = useSelector((state: RootState) => ({
-    todos: state.todos.todos,
-  }));
-  // console.log("todos", todos);
+  const { data: todos } = useTodoListQuery();
 
   return (
     <>
