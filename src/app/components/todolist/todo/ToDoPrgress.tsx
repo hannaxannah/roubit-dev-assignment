@@ -16,7 +16,7 @@ const ToDoProgress = () => {
       {/* Tasks Done */}
       <div className="w-[327px] mx-[24px] flex flex-col items-center fixed top-[706px]">
         <div className="font-pretendard font-semibold text-[14px] text-[#26BD81] tracking-tight">
-          {completedTodos} of {todos!.length} tasks done
+          {completedTodos} of {todos?.length} tasks done
         </div>
         {/* 진행 바 배경 */}
         <div className="w-full h-[20px] mt-[10px] px-[16px] py-[5px] flex bg-[#26BD81] rounded-[12px]">

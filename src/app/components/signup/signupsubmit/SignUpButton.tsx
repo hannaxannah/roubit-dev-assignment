@@ -11,10 +11,10 @@ const SignUpButton = () => {
   const router = useRouter();
 
   // 폼 제출 핸들러
-  const handleSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (event?: React.MouseEvent<HTMLButtonElement>) => {
     if (event) event.preventDefault();
     const { phoneNumberOrEmail, password, fullName, username } = signupFormData;
-    signupMutation.mutateAsync({
+    await signupMutation.mutateAsync({
       phoneNumberOrEmail,
       password,
       fullName,
