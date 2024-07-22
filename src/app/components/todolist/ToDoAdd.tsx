@@ -7,16 +7,22 @@ import { Todo } from "@/app/todolist/page";
 const ToDoAdd = () => {
   const title = useTodoStore((state) => state.titleInput);
   const addTodoInput = useTodoStore((state) => state.addTodoInput);
+  const addTodo = useTodoStore((state) => state.addTodo);
   const addTodoMutation = useAddTodoMutation();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     addTodoInput(event.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (title && title.trim()) {
-      addTodoMutation.mutate(title);
+      try {
+        const newTodo: Todo = await addTodoMutation.mutateAsync(title);
+        addTodo(newTodo);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

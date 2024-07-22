@@ -10,7 +10,7 @@ import {
   useUpdateTodoMutation,
   useDeleteTodoMutation,
 } from "@/app/todolist/tanstack-query/todoMutation";
-
+import { useQueryClient } from "@tanstack/react-query";
 interface TodoListItemProps {
   todo: Todo;
 }
@@ -19,25 +19,53 @@ const TodoListItem = ({ todo }: TodoListItemProps) => {
   const todoInput = useTodoStore((state) => state.todo);
   const toggle = useTodoStore((state) => state.toggle);
   const updateTodoInput = useTodoStore((state) => state.updateTodoInput);
+  const updateTodo = useTodoStore((state) => state.updateTodo);
+  const clearTodoInput = useTodoStore((state) => state.clearTodoInput);
+  const deleteTodo = useTodoStore((state) => state.deleteTodo);
 
   const checkMutation = useCheckTodoMutation();
   const updateMutation = useUpdateTodoMutation();
   const deleteMutation = useDeleteTodoMutation();
 
+  const queryClient = useQueryClient();
+
   // todo check 클릭
-  const handleCheckClick = () => {
-    checkMutation.mutate({ id: todo.id, completed: !todo.completed });
+  const handleCheckClick = async () => {
+    await checkMutation.mutateAsync({
+      id: todo.id,
+      completed: !todo.completed,
+    });
   };
 
   // 수정 버튼 클릭
-  const handleUpdateClick = () => {
+  const handleUpdateClick = async () => {
     if (!todoInput.isEditing) {
-      console.log("toggle2", todoInput);
       updateTodoInput(todo.id, todo.title);
-      console.log("updateTodoInput", todoInput);
       toggle(todo.id, true);
     } else {
-      updateMutation.mutate({ id: todo.id, title: todoInput.title });
+      if (todo.title === todoInput.title) {
+        toggle(todo.id, false);
+      } else {
+        const previousTodos = queryClient.getQueryData(["todos"]);
+
+        queryClient.setQueryData(["todos"], (oldTodos: Todo[]) =>
+          oldTodos.map((t) =>
+            t.id === todo.id ? { ...t, title: todoInput.title } : t
+          )
+        );
+        try {
+          const updatedTodo = await updateMutation.mutateAsync({
+            id: todo.id,
+            title: todoInput.title,
+          });
+          updateTodo(updatedTodo);
+        } catch (error) {
+          queryClient.setQueryData(["todos"], previousTodos);
+          console.error("updateTodo failed:", error);
+        } finally {
+          clearTodoInput();
+        }
+      }
     }
   };
 
@@ -47,8 +75,9 @@ const TodoListItem = ({ todo }: TodoListItemProps) => {
   };
 
   // 삭제 버튼 클릭
-  const handleDeleteClick = () => {
-    deleteMutation.mutate(todo.id);
+  const handleDeleteClick = async () => {
+    const deletedTodo = await deleteMutation.mutateAsync(todo.id);
+    deleteTodo(deletedTodo);
   };
 
   return (

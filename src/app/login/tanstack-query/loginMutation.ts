@@ -1,13 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { fetchSignIn } from "@/app/APIs/userAPI";
 
 export const useLoginMutation = () => {
-  const router = useRouter();
-
-  return useMutation({
+  const { mutateAsync, isSuccess, isError, isPending } = useMutation({
     mutationFn: ({
       phoneNumberOrEmail,
       password,
@@ -15,12 +12,10 @@ export const useLoginMutation = () => {
       phoneNumberOrEmail: string;
       password: string;
     }) => fetchSignIn({ phoneNumberOrEmail, password }),
-    onSuccess: (data) => {
-      console.log("tanstack", data);
-      router.push("/todolist");
-    },
+    onSuccess: (data) => {},
     onError: (error: any) => {
       console.error("Login failed:", error.message);
     },
   });
+  return { mutateAsync, isSuccess, isError, isSignInPending: isPending };
 };

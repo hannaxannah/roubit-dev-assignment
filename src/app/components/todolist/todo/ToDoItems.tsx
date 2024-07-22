@@ -4,7 +4,7 @@ import TodoListItem from "../todoitems/ToDoListItem";
 import useTodoListQuery from "@/app/todolist/tanstack-query/todoQuery";
 
 const ToDoItems = () => {
-  const { data: todos } = useTodoListQuery();
+  const { todos } = useTodoListQuery();
 
   return (
     <>

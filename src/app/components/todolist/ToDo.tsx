@@ -1,9 +1,8 @@
 "use client";
 
+import useTodoListQuery from "@/app/todolist/tanstack-query/todoQuery";
 import ToDoItems from "./todo/ToDoItems";
 import ToDoProgress from "./todo/ToDoPrgress";
-import { useDispatch } from "react-redux";
-import { todoListRequest } from "../../redux/actions/todoAction";
 
 export type Todo = {
   id: string;
@@ -12,10 +11,10 @@ export type Todo = {
 };
 
 const ToDo = () => {
-  const dispatch = useDispatch();
-
-  dispatch(todoListRequest());
-
+  const { isTodoListLoading } = useTodoListQuery();
+  if (isTodoListLoading) {
+    return <></>;
+  }
   return (
     <>
       <ToDoItems />

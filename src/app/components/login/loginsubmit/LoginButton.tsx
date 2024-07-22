@@ -2,16 +2,25 @@
 
 import useAuthStore from "@/app/login/zustand/authStore";
 import { useLoginMutation } from "@/app/login/tanstack-query/loginMutation";
+import { useRouter } from "next/navigation";
 
 const LoginButton = () => {
   const loginFormData = useAuthStore((state) => state.loginFormData);
   const loginMutation = useLoginMutation();
 
+  const router = useRouter();
+
   // 폼 제출 핸들러
-  const onSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
+  const onSubmit = async (event?: React.MouseEvent<HTMLButtonElement>) => {
     if (event) event.preventDefault();
     const { phoneNumberOrEmail, password } = loginFormData;
-    loginMutation.mutate({ phoneNumberOrEmail, password });
+    const data = await loginMutation.mutateAsync({
+      phoneNumberOrEmail,
+      password,
+    });
+    loginMutation.isSignInPending ? console.log("로그인 로딩") : null;
+    localStorage.setItem("accessToken", data.data.accessToken);
+    router.push("/todolist");
   };
 
   return (

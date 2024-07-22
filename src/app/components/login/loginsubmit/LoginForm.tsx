@@ -27,7 +27,7 @@ const LoginForm = () => {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     loginInput(name, value);
-    console.log(loginFormData);
+    // console.log(loginFormData);
   };
 
   return (

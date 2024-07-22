@@ -13,7 +13,7 @@ const useTodoListQuery = () => {
     queryKey: ["todos"],
     queryFn: fetchGetTodos,
   });
-  return { data: todos, error, isLoading };
+  return { todos, error, isTodoListLoading: isLoading };
 };
 
 export default useTodoListQuery;
