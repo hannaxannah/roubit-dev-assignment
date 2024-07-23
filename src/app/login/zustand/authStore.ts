@@ -15,7 +15,6 @@ interface Response {
 type State = {
   loginFormData: LoginFormData;
   response: Response;
-  accessToken: string;
 };
 
 type Actions = {
@@ -32,7 +31,6 @@ const useAuthStore = create<State & Actions>()(
       loading: false,
       message: "",
     },
-    accessToken: "",
     loginInput: (name: string, value: string) =>
       set((state) => {
         state.loginFormData[name] = value;

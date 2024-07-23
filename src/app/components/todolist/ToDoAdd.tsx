@@ -1,13 +1,20 @@
 import Image from "next/image";
 import button from "../../../../public/Frame 6110.svg";
 import useTodoStore from "@/app/todolist/zustand/todoStore";
+import { useShallow } from "zustand/react/shallow";
 import { useAddTodoMutation } from "@/app/todolist/tanstack-query/todoMutation";
 import { Todo } from "@/app/todolist/page";
 
 const ToDoAdd = () => {
-  const title = useTodoStore((state) => state.titleInput);
-  const addTodoInput = useTodoStore((state) => state.addTodoInput);
-  const addTodo = useTodoStore((state) => state.addTodo);
+  const { title } = useTodoStore(
+    useShallow((state) => ({ title: state.titleInput }))
+  );
+  const { addTodoInput } = useTodoStore(
+    useShallow((state) => ({ addTodoInput: state.addTodoInput }))
+  );
+  const { addTodo } = useTodoStore(
+    useShallow((state) => ({ addTodo: state.addTodo }))
+  );
   const addTodoMutation = useAddTodoMutation();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

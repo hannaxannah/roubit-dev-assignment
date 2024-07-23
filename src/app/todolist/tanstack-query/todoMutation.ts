@@ -11,7 +11,7 @@ import { Todo, queryClient } from "../page";
 
 export const useAddTodoMutation = () => {
   const { mutateAsync, isSuccess, isError } = useMutation({
-    mutationFn: (title: string) => fetchCreateTodo(title),
+    mutationFn: fetchCreateTodo,
     onSuccess: (newTodo: Todo) => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
@@ -24,8 +24,7 @@ export const useAddTodoMutation = () => {
 
 export const useCheckTodoMutation = () => {
   const { mutateAsync, isSuccess, isError } = useMutation({
-    mutationFn: ({ id, completed }: { id: string; completed: boolean }) =>
-      fetchCheckTodo(id, completed),
+    mutationFn: fetchCheckTodo,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
@@ -38,8 +37,7 @@ export const useCheckTodoMutation = () => {
 
 export const useUpdateTodoMutation = () => {
   const { mutateAsync, isSuccess, isError, isPending } = useMutation({
-    mutationFn: ({ id, title }: { id: string; title: string }) =>
-      fetchUpdateTodo(id, title),
+    mutationFn: fetchUpdateTodo,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
@@ -52,7 +50,7 @@ export const useUpdateTodoMutation = () => {
 
 export const useDeleteTodoMutation = () => {
   const { mutateAsync, isSuccess, isError } = useMutation({
-    mutationFn: (id: string) => fetchDeleteTodo(id),
+    mutationFn: fetchDeleteTodo,
     onSuccess: (data: string) => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },

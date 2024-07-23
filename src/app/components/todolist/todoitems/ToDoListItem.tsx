@@ -5,6 +5,7 @@ import unchecked from "../../../../../public/unchecked.svg";
 import deleteButton from "../../../../../public/trash-2.svg";
 import { Todo } from "@/app/todolist/page";
 import useTodoStore from "@/app/todolist/zustand/todoStore";
+import { useShallow } from "zustand/react/shallow";
 import {
   useCheckTodoMutation,
   useUpdateTodoMutation,
@@ -16,12 +17,21 @@ interface TodoListItemProps {
 }
 
 const TodoListItem = ({ todo }: TodoListItemProps) => {
-  const todoInput = useTodoStore((state) => state.todo);
-  const toggle = useTodoStore((state) => state.toggle);
-  const updateTodoInput = useTodoStore((state) => state.updateTodoInput);
-  const updateTodo = useTodoStore((state) => state.updateTodo);
-  const clearTodoInput = useTodoStore((state) => state.clearTodoInput);
-  const deleteTodo = useTodoStore((state) => state.deleteTodo);
+  const { todoInput } = useTodoStore(
+    useShallow((state) => ({ todoInput: state.todo }))
+  );
+  const { toggleIsEditing } = useTodoStore(
+    useShallow((state) => ({ toggleIsEditing: state.toggle }))
+  );
+  const { updateTodoInput } = useTodoStore(
+    useShallow((state) => ({ updateTodoInput: state.updateTodoInput }))
+  );
+  const { clearTodoInput } = useTodoStore(
+    useShallow((state) => ({ clearTodoInput: state.clearTodoInput }))
+  );
+  const { deleteTodo } = useTodoStore(
+    useShallow((state) => ({ deleteTodo: state.deleteTodo }))
+  );
 
   const checkMutation = useCheckTodoMutation();
   const updateMutation = useUpdateTodoMutation();
@@ -41,24 +51,24 @@ const TodoListItem = ({ todo }: TodoListItemProps) => {
   const handleUpdateClick = async () => {
     if (!todoInput.isEditing) {
       updateTodoInput(todo.id, todo.title);
-      toggle(todo.id, true);
+      toggleIsEditing(todo.id, true);
     } else {
       if (todo.title === todoInput.title) {
-        toggle(todo.id, false);
+        toggleIsEditing(todo.id, false);
       } else {
         const previousTodos = queryClient.getQueryData(["todos"]);
-
-        queryClient.setQueryData(["todos"], (oldTodos: Todo[]) =>
-          oldTodos.map((t) =>
-            t.id === todo.id ? { ...t, title: todoInput.title } : t
-          )
-        );
         try {
-          const updatedTodo = await updateMutation.mutateAsync({
+          const result = updateMutation.mutateAsync({
             id: todo.id,
             title: todoInput.title,
           });
-          updateTodo(updatedTodo);
+
+          queryClient.setQueryData(["todos"], (oldTodos: Todo[]) =>
+            oldTodos.map((t) =>
+              t.id === todo.id ? { ...t, title: todoInput.title } : t
+            )
+          );
+          await result;
         } catch (error) {
           queryClient.setQueryData(["todos"], previousTodos);
           console.error("updateTodo failed:", error);
