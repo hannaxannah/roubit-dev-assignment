@@ -1,6 +1,11 @@
+"use client";
+
 import Header from "../components/Header";
 import SignUpTitle from "../components/signup/SignUpTitle";
 import SignUpSubmit from "../components/signup/SignUpSubmit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export type signUpFormData = {
   phoneNumberOrEmail: string;
@@ -12,9 +17,11 @@ export type signUpFormData = {
 const SignUp = () => {
   return (
     <>
-      <Header />
-      <SignUpTitle />
-      <SignUpSubmit />
+      <QueryClientProvider client={queryClient}>
+        <Header />
+        <SignUpTitle />
+        <SignUpSubmit />
+      </QueryClientProvider>
     </>
   );
 };

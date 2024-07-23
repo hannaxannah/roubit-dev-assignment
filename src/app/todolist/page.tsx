@@ -1,8 +1,11 @@
 "use client";
-import { useState } from "react";
+
 import ToDoTitle from "../components/todolist/ToDoTitle";
 import ToDoAdd from "../components/todolist/ToDoAdd";
 import ToDo from "../components/todolist/ToDo";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+export const queryClient = new QueryClient();
 
 export type Todo = {
   id: string;
@@ -13,9 +16,11 @@ export type Todo = {
 const ToDoList = () => {
   return (
     <>
-      <ToDoTitle />
-      <ToDoAdd />
-      <ToDo />
+      <QueryClientProvider client={queryClient}>
+        <ToDoTitle />
+        <ToDoAdd />
+        <ToDo />
+      </QueryClientProvider>
     </>
   );
 };

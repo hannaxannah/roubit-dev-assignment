@@ -1,23 +1,22 @@
-import { RootState } from "../../../redux/reducers/index";
-import { useSelector } from "react-redux";
+import useTodoListQuery from "@/app/todolist/tanstack-query/todoQuery";
 
 const ToDoProgress = () => {
-  const { todos } = useSelector((state: RootState) => ({
-    todos: state.todos.todos,
-  }));
+  const { todos } = useTodoListQuery();
 
-  const completedTodos = todos.filter((todo) => todo.completed).length;
+  const completedTodos = (todos?.filter((todo) => todo.completed) ?? []).length;
 
   // 진행률 바 길이
   const progressWidth =
-    todos.length > 0 ? (completedTodos / todos.length) * 100 : 0;
+    (todos ?? []).length > 0
+      ? (completedTodos / (todos ?? []).length) * 100
+      : 0;
 
   return (
     <>
       {/* Tasks Done */}
       <div className="w-[327px] mx-[24px] flex flex-col items-center fixed top-[706px]">
         <div className="font-pretendard font-semibold text-[14px] text-[#26BD81] tracking-tight">
-          {completedTodos} of {todos.length} tasks done
+          {completedTodos} of {todos?.length} tasks done
         </div>
         {/* 진행 바 배경 */}
         <div className="w-full h-[20px] mt-[10px] px-[16px] py-[5px] flex bg-[#26BD81] rounded-[12px]">

@@ -1,24 +1,10 @@
 "use client";
 
-import { RootState } from "../../../redux/reducers";
-import { useSelector, useDispatch } from "react-redux";
-import { logInInput } from "../../../redux/actions/userAction";
-
-// interface LogInFormProps {
-//   formData: {
-//     phoneNumberOrEmail: string;
-//     password: string;
-//   };
-//   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-// }
+import useAuthStore from "@/app/login/zustand/authStore";
 
 const LoginForm = () => {
-  const { loginFormData } = useSelector((state: RootState) => ({
-    loginFormData: state.user.loginFormData,
-  }));
-
-  // console.log("login", login);
-  const dispatch = useDispatch();
+  const loginFormData = useAuthStore((state) => state.loginFormData);
+  const loginInput = useAuthStore((state) => state.loginInput);
 
   const formFields = [
     {
@@ -40,8 +26,8 @@ const LoginForm = () => {
   // 폼 입력 상태 업데이트
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    // console.log(name, value);
-    dispatch(logInInput({ ...loginFormData, [name]: value }));
+    loginInput(name, value);
+    // console.log(loginFormData);
   };
 
   return (

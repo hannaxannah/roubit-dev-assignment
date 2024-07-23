@@ -1,39 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
+import useSignupStore from "@/app/signup/zustand/signupStore";
+import { useSignupMutation } from "@/app/signup/tanstack-query/signupMutation";
 import { useRouter } from "next/navigation";
-import { RootState } from "../../../redux/reducers";
-import { useSelector, useDispatch } from "react-redux";
-import { signUpRequest } from "../../../redux/actions/userAction";
 
 const SignUpButton = () => {
-  const { signupFormData } = useSelector((state: RootState) => ({
-    signupFormData: state.user.signupFormData,
-  }));
+  const signupFormData = useSignupStore((state) => state.signupFormData);
+  const signupMutation = useSignupMutation();
 
-  const { route } = useSelector((state: RootState) => ({
-    route: state.user.route,
-  }));
-
-  const dispatch = useDispatch();
-
-  // router 객체
   const router = useRouter();
 
   // 폼 제출 핸들러
-  const handleSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (event?: React.MouseEvent<HTMLButtonElement>) => {
     if (event) event.preventDefault();
-
-    dispatch(signUpRequest(signupFormData));
+    const { phoneNumberOrEmail, password, fullName, username } = signupFormData;
+    await signupMutation.mutateAsync({
+      phoneNumberOrEmail,
+      password,
+      fullName,
+      username,
+    });
+    router.push("/login");
+    signupMutation.isSignUpPending ? console.log("회원가입 로딩") : null;
   };
-
-  // 폼 제출 로그인 페이지로 이동
-  useEffect(() => {
-    if (route != "") {
-      // console.log(route);
-      router.push(route);
-    }
-  }, [route, router]);
 
   return (
     <>

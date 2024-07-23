@@ -2,7 +2,7 @@ import axios from "axios";
 import { GRAPHQL_ENDPOINT } from "./endPoint";
 import { SIGN_UP_QUERY, SIGN_IN_QUERY } from "./userQuery";
 import { signUpFormData } from "../signup/page";
-import { logInFormData } from "../login/page";
+import { loginFormData } from "../login/page";
 
 export interface SignUpReturn {
   status: number;
@@ -62,7 +62,7 @@ export const fetchSignUp = async ({
 export const fetchSignIn = async ({
   phoneNumberOrEmail: email,
   password,
-}: logInFormData): Promise<SignInReturn> => {
+}: loginFormData): Promise<SignInReturn> => {
   try {
     // console.log("fetchSignIn", phoneNumberOrEmail, password);
     const response = await axios.post(GRAPHQL_ENDPOINT, {

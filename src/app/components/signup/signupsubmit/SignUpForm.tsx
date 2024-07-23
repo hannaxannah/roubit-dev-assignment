@@ -1,20 +1,14 @@
 "use client";
 
-import { RootState } from "@/app/redux/reducers";
-import { useSelector, useDispatch } from "react-redux";
-import { signUpInput } from "@/app/redux/actions/userAction";
+import useSignupStore from "@/app/signup/zustand/signupStore";
 
 const SignUpForm = () => {
-  const { signupFormData } = useSelector((state: RootState) => ({
-    signupFormData: state.user.signupFormData,
-  }));
-
-  const dispatch = useDispatch();
+  const signupFormData = useSignupStore((state) => state.signupFormData);
+  const signupInput = useSignupStore((state) => state.signupInput);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    // console.log(name, value);
-    dispatch(signUpInput({ ...signupFormData, [name]: value }));
+    signupInput(name, value);
   };
 
   // 각 입력 요소의 정보 배열

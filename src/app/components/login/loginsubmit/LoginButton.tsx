@@ -1,39 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
+import useAuthStore from "@/app/login/zustand/authStore";
+import { useLoginMutation } from "@/app/login/tanstack-query/loginMutation";
 import { useRouter } from "next/navigation";
-import { RootState } from "../../../redux/reducers";
-import { useSelector, useDispatch } from "react-redux";
-import { logInRequest } from "../../../redux/actions/userAction";
 
 const LoginButton = () => {
-  const { loginFormData } = useSelector((state: RootState) => ({
-    loginFormData: state.user.loginFormData,
-  }));
+  const loginFormData = useAuthStore((state) => state.loginFormData);
+  const loginMutation = useLoginMutation();
 
-  const { route } = useSelector((state: RootState) => ({
-    route: state.user.route,
-  }));
-
-  const dispatch = useDispatch();
-
-  // router 객체
   const router = useRouter();
 
   // 폼 제출 핸들러
-  const onSubmit = (event?: React.MouseEvent<HTMLButtonElement>) => {
+  const onSubmit = async (event?: React.MouseEvent<HTMLButtonElement>) => {
     if (event) event.preventDefault();
-
-    dispatch(logInRequest(loginFormData));
+    const { phoneNumberOrEmail, password } = loginFormData;
+    const data = await loginMutation.mutateAsync({
+      phoneNumberOrEmail,
+      password,
+    });
+    loginMutation.isSignInPending ? console.log("로그인 로딩") : null;
+    localStorage.setItem("accessToken", data.data.accessToken);
+    router.push("/todolist");
   };
-
-  // 폼 제출 투두리스트 페이지로 이동
-  useEffect(() => {
-    if (route != "") {
-      // console.log(route);
-      router.push(route);
-    }
-  }, [route, router]);
 
   return (
     <>

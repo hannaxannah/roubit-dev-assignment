@@ -1,57 +1,93 @@
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import checked from "../../../../../public/checked.svg";
 import unchecked from "../../../../../public/unchecked.svg";
 import deleteButton from "../../../../../public/trash-2.svg";
-import { useDispatch, useSelector } from "react-redux";
+import { Todo } from "@/app/todolist/page";
+import useTodoStore from "@/app/todolist/zustand/todoStore";
+import { useShallow } from "zustand/react/shallow";
 import {
-  Todo,
-  checkTodoRequest,
-  toggleEditing,
-  updateTodoSetting,
-  updateTodoRequest,
-  updateTodoInput,
-  deleteTodoRequest,
-} from "../../../redux/actions/todoAction";
-import { RootState } from "@/app/redux/reducers";
-
+  useCheckTodoMutation,
+  useUpdateTodoMutation,
+  useDeleteTodoMutation,
+} from "@/app/todolist/tanstack-query/todoMutation";
+import { useQueryClient } from "@tanstack/react-query";
 interface TodoListItemProps {
   todo: Todo;
 }
 
 const TodoListItem = ({ todo }: TodoListItemProps) => {
-  const dispatch = useDispatch();
+  const { todoInput } = useTodoStore(
+    useShallow((state) => ({ todoInput: state.todo }))
+  );
+  const { toggleIsEditing } = useTodoStore(
+    useShallow((state) => ({ toggleIsEditing: state.toggle }))
+  );
+  const { updateTodoInput } = useTodoStore(
+    useShallow((state) => ({ updateTodoInput: state.updateTodoInput }))
+  );
+  const { clearTodoInput } = useTodoStore(
+    useShallow((state) => ({ clearTodoInput: state.clearTodoInput }))
+  );
+  const { deleteTodo } = useTodoStore(
+    useShallow((state) => ({ deleteTodo: state.deleteTodo }))
+  );
 
-  const { updateTodo } = useSelector((state: RootState) => ({
-    updateTodo: state.todos.todo,
-  }));
-  // console.log(updateTodo);
+  const checkMutation = useCheckTodoMutation();
+  const updateMutation = useUpdateTodoMutation();
+  const deleteMutation = useDeleteTodoMutation();
+
+  const queryClient = useQueryClient();
 
   // todo check 클릭
-  const handleCheckClick = () => {
-    // console.log("check click,", todo.id, todo.completed);
-    dispatch(checkTodoRequest(todo.id, !todo.completed));
+  const handleCheckClick = async () => {
+    await checkMutation.mutateAsync({
+      id: todo.id,
+      completed: !todo.completed,
+    });
   };
 
   // 수정 버튼 클릭
-  const handleUpdateClick = () => {
-    // console.log("update click,", todo.id, todo.title);
-
-    if (!updateTodo.isEditing) {
-      dispatch(updateTodoInput(todo.id, todo.title));
-      dispatch(toggleEditing(todo.id, true));
+  const handleUpdateClick = async () => {
+    if (!todoInput.isEditing) {
+      updateTodoInput(todo.id, todo.title);
+      toggleIsEditing(todo.id, true);
     } else {
-      dispatch(updateTodoRequest(todo.id, updateTodo.newTitle));
+      if (todo.title === todoInput.title) {
+        toggleIsEditing(todo.id, false);
+      } else {
+        const previousTodos = queryClient.getQueryData(["todos"]);
+        try {
+          const result = updateMutation.mutateAsync({
+            id: todo.id,
+            title: todoInput.title,
+          });
+
+          queryClient.setQueryData(["todos"], (oldTodos: Todo[]) =>
+            oldTodos.map((t) =>
+              t.id === todo.id ? { ...t, title: todoInput.title } : t
+            )
+          );
+          await result;
+        } catch (error) {
+          queryClient.setQueryData(["todos"], previousTodos);
+          console.error("updateTodo failed:", error);
+        } finally {
+          clearTodoInput();
+        }
+      }
     }
   };
 
   // title 수정
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(updateTodoInput(todo.id, e.target.value));
+    updateTodoInput(todo.id, e.target.value);
   };
 
-  const handleDeleteClick = () => {
-    dispatch(deleteTodoRequest(todo.id));
+  // 삭제 버튼 클릭
+  const handleDeleteClick = async () => {
+    const deletedTodo = await deleteMutation.mutateAsync(todo.id);
+    deleteTodo(deletedTodo);
   };
 
   return (
@@ -65,11 +101,11 @@ const TodoListItem = ({ todo }: TodoListItemProps) => {
         )}
       </button>
       {/* todo label or todo update */}
-      {todo.id == updateTodo.id && updateTodo.isEditing ? (
+      {todo.id == todoInput.id && todoInput.isEditing ? (
         <input
           type="text"
           onChange={handleInputChange}
-          value={updateTodo.newTitle}
+          value={todoInput.title}
           className="w-full font-pretendard font-medium text-[16px] text-[#323233] leading-[24px] tracking-tight"
         />
       ) : (

@@ -81,7 +81,13 @@ export const fetchDeleteTodo = async (id: string) => {
   }
 };
 
-export const fetchCheckTodo = async (id: string, completed: boolean) => {
+export const fetchCheckTodo = async ({
+  id,
+  completed,
+}: {
+  id: string;
+  completed: boolean;
+}) => {
   try {
     const response = await api.post("", {
       query: CHECK_TODO_QUERY,
@@ -100,7 +106,13 @@ export const fetchCheckTodo = async (id: string, completed: boolean) => {
   }
 };
 
-export const fetchUpdateTodo = async (id: string, title: string) => {
+export const fetchUpdateTodo = async ({
+  id,
+  title,
+}: {
+  id: string;
+  title: string;
+}) => {
   try {
     const response = await api.post("", {
       query: UPDATE_TODO_QUERY,
